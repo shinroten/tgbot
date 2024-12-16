@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: tele_bot
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5433:5432"
+
+  bot:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:root@db/tele_bot
+      API_TOKEN: '7352442248:AAH9iCQ63EBR9fZ7n4Nm9wb2Jzu8eEPq9mg'
+    volumes:
+      - .:/app
+    command: python main.py
+
+volumes:
+  postgres_data:
